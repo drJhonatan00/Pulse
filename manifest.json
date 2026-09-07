@@ -1,0 +1,15 @@
+{
+  "name": "Pulse — GitHub Release Analytics",
+  "short_name": "Pulse",
+  "description": "A premium dashboard for tracking public GitHub release downloads.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
+  "categories": ["developer", "productivity", "utilities"],
+  "icons": [
+    { "src": "logo.png", "sizes": "512x455", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

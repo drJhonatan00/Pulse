@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0f19">
+  <meta name="description" content="A premium GitHub release download analytics dashboard.">
+  <title>Pulse — GitHub release analytics</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Pulse home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>pulse<span class="brand-dot">.</span></span>
+      </a>
+      <div class="topbar-actions">
+        <span class="status-chip"><i></i> GitHub API connected</span>
+        <button class="icon-button" id="installBtn" title="Install Pulse" aria-label="Install Pulse" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+        </button>
+        <button class="icon-button" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2m0 14v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M3 12h2m14 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="eyebrow"><span class="eyebrow-line"></span> REPOSITORY INTELLIGENCE</div>
+        <h1>Know what your<br><em>releases</em> are doing.</h1>
+        <p class="hero-copy">Turn public GitHub release assets into a clear, living picture of adoption. Fast, private, and beautifully focused.</p>
+        <form class="search-bar" id="searchForm">
+          <div class="search-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg></div>
+          <input id="repoInput" type="text" placeholder="Search owner / repository" autocomplete="off" spellcheck="false" aria-label="GitHub repository path">
+          <button class="search-submit" id="searchBtn" type="submit"><span>Analyze</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+        </form>
+        <div class="search-meta"><span>Try <button class="example-link" data-example="vercel/next.js">vercel/next.js</button></span><span class="meta-separator">•</span><span>Public repositories only</span></div>
+      </section>
+
+      <section class="workspace-grid">
+        <aside class="sidebar-card">
+          <div class="side-heading"><span>Recent searches</span><button id="clearHistory" class="text-button">Clear</button></div>
+          <div id="historyList" class="history-list"><div class="empty-side">Your recent searches<br>will appear here.</div></div>
+          <div class="side-divider"></div>
+          <div class="side-heading"><span>Favorites</span><span class="count-pill" id="favoriteCount">0</span></div>
+          <div id="favoritesList" class="history-list"><div class="empty-side">Save a repository to keep<br>it close at hand.</div></div>
+          <div class="sidebar-footer"><span class="pulse-ring"></span> Updates from GitHub in real time</div>
+        </aside>
+
+        <section class="content-column">
+          <div id="welcomeState" class="welcome-card">
+            <div class="welcome-visual"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit-core"><span>↗</span></div><span class="orbit-dot dot-a"></span><span class="orbit-dot dot-b"></span><span class="orbit-dot dot-c"></span></div>
+            <div><div class="eyebrow small">YOUR CONTROL ROOM</div><h2>One place for every release signal.</h2><p>Search a public repository to see download momentum, release cadence, and asset-level performance at a glance.</p></div>
+            <div class="welcome-note"><span>01</span><strong>No account required</strong><small>We only read public GitHub data.</small></div>
+          </div>
+
+          <div id="loadingState" class="state-card hidden"><div class="spinner"></div><div><strong>Reading the repository signal…</strong><span>Fetching releases and metadata from GitHub.</span></div></div>
+          <div id="errorState" class="error-card hidden"><span class="error-icon">!</span><div><strong id="errorTitle">We could not load that repository.</strong><span id="errorMessage">Check the path and try again.</span></div><button id="retryBtn" class="text-button">Retry</button></div>
+
+          <section id="resultsSection" class="results hidden">
+            <div class="repo-header">
+              <div class="repo-identity"><div class="repo-avatar" id="repoAvatar">GH</div><div><div class="repo-path" id="repoPath">owner/repository</div><h2 id="repoName">Repository</h2><span id="repoDescription">Repository description</span></div></div>
+              <div class="repo-actions"><a id="githubLink" class="ghost-button" target="_blank" rel="noreferrer" href="#">Open on GitHub <span>↗</span></a><button id="favoriteBtn" class="ghost-button favorite-button"><span>☆</span> Save</button></div>
+            </div>
+            <div class="stats-grid">
+              <article class="metric-card metric-primary"><div class="metric-top"><span>Total downloads</span><span class="metric-icon">↗</span></div><strong id="totalDownloads">0</strong><small id="downloadCaption">Across published release assets</small><div class="sparkline"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+              <article class="metric-card"><div class="metric-top"><span>Published releases</span><span class="mini-icon">◷</span></div><strong id="totalReleases">0</strong><small id="releaseCaption">In the visible release history</small><div class="metric-rule"></div></article>
+              <article class="metric-card"><div class="metric-top"><span>Latest version</span><span class="mini-icon">#</span></div><strong id="latestVersion">—</strong><small id="latestDate">Latest published tag</small><div class="metric-rule accent"></div></article>
+              <article class="metric-card"><div class="metric-top"><span>Repository stars</span><span class="mini-icon">✦</span></div><strong id="repoStars">—</strong><small id="repoForks">— forks</small><div class="metric-rule"></div></article>
+            </div>
+            <div class="insight-row"><div class="insight-card"><div class="section-heading"><div><span class="eyebrow small">RELEASE PERFORMANCE</span><h3>Asset download breakdown</h3></div><select id="releaseFilter" aria-label="Filter releases"><option value="all">All releases</option><option value="top">Top downloads</option><option value="recent">Most recent</option></select></div><div id="releasesList" class="releases-list"></div></div><aside class="quick-card"><div class="section-heading"><div><span class="eyebrow small">MOBILE READY</span><h3>Take Pulse with you</h3></div><span class="phone-icon">▯</span></div><p>Install Pulse for a distraction-free home screen shortcut. Your saved repositories stay on this device.</p><button id="widgetBtn" class="wide-button">Add mobile shortcut <span>↗</span></button><div class="privacy-note"><span>◉</span> Local-first history · no sign-in</div></aside></div>
+            <div class="results-footer"><span id="lastUpdated">Updated just now</span><span>Data sourced from public GitHub APIs</span></div>
+          </section>
+        </section>
+      </section>
+    </main>
+    <footer class="app-footer"><span>pulse<span class="brand-dot">.</span></span><span>Release intelligence, without the noise.</span><span><a href="https://github.com/drJhonatan00">Developed by @drJhonatan00</a></span></footer>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
