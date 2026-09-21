@@ -38,3 +38,5 @@ Since Pulse runs entirely in the browser using public APIs, no build tools or se
    git clone [https://github.com/drJhonatan00/pulse.git](https://github.com/drJhonatan00/pulse.git)
 
 2. Open index.html in any web browser or serve via a local development server.
+
+<!-- Watashi wa watashi sore dake -->
